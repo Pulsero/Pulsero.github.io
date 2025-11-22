@@ -305,4 +305,238 @@ int main()
 }
 
 
+
+// 采药， 辰辰是个天资聪颖的孩子，他的梦想是成为世界上最伟大的医师。为此，他想拜附近最有威望的医师为师。医师为了判断他的资质，给他出了一个难题。医师把他带到一个到处都是草药的山洞里对他说：“孩子，这个山洞里有一些不同的草药
+
+#include <iostream>
+
+using namespace std;
+
+const int N = 110, M = 1010;
+
+int dp[M], t[N], w[N];
+int n, m;
+
+void input() {
+    cin >> m >> n;
+    for(int i = 1; i <= n; ++ i) cin >> t[i] >> w[i];
+}
+
+void solve() {
+    for(int  i = 1; i <= n; ++ i) 
+        for(int j = m; j >= t[i]; -- j) 
+            dp[j] = max(dp[j], dp[j - t[i]] + w[i]);
+}
+
+int main(){
+    input();
+
+    solve();
+    cout << dp[m] << endl;
+    return 0;
+}
+
+
+// 开心金明，金明今天很开心，家里购置的新房就要领钥匙了，新房里有一间他自己专用的很宽敞的房间。更让他高兴的是，妈妈昨天对他说：“你的房间需要购买哪些物品
+
+#include <bits/stdc++.h>
+using namespace std;
+const int M = 3e5+8, N = 3e3+8;
+int f[M],w[N],c[N],m,n;
+ 
+int main(void) {
+	cin>>m>>n;
+	for(int i=1; i <= n; i++){
+		cin>>w[i]>>c[i];
+		c[i] *= w[i];
+	}
+	for(int i=1; i <= n; i++) {
+		for(int j=m; j >= w[i]; j--) {
+			f[j] = max(f[j],c[i] + f[j - w[i]]);
+		}
+	}
+	cout<<f[m];
+	return 0;
+}
+
+// 能量项链，在 Mars 星球上，每个 Mars 人都随身佩带着一串能量项链。在项链上有 N 颗能量珠。能量珠是一颗有头标记与尾标记的珠子，这些标记对应着某个正整数。并且，对于相邻的两颗珠子，前一颗珠子的尾标记一定等于后一颗珠子的头标记。因为只有这样，
+
+#include<bits/stdc++.h>
+using namespace std;
+int head[205],tail[205],f[205][205]={0};
+int main()
+{
+	int ans=0,n,i,t,j,k;
+	cin>>n;
+	for(i=1;i<=n;i++) 
+	{
+		cin>>head[i];
+		head[i+n]=head[i];
+	}
+	for(i=1;i<=2*n-1;i++) tail[i]=head[i+1];
+	tail[2*n]=head[1];
+	for(i=1;i<=2*n-1;i++) f[i][i]=0;
+	for(t=1;t<=n-1;t++)
+	{
+		for(i=1;i<=2*n-t;i++)
+		{
+			j=i+t;
+			for(k=i;k<=j-1;k++)
+			{
+				f[i][j]=max(f[i][j],f[i][k]+f[k+1][j]+head[i]*tail[k]*tail[j]);
+			}
+		}
+	}
+	for(i=1;i<=n;i++) ans=max(ans,f[i][i+n-1]);
+	cout<<ans<<endl;
+	return 0;
+ }
+
+
+// B2064 斐波那契数列
+
+#include<stdio.h>
+int main()
+{
+	int n,i,m,j;
+	int x[40];
+	x[1]=1;x[2]=1;
+	scanf("%d",&n);
+	for(i=1;i<=n;i++)
+	{
+		scanf("%d",&m);
+		for(j=3;j<=m;j++)
+		{
+			x[j]=x[j-2]+x[j-1];
+		}
+		printf("%d\n",x[m]);
+	}
+}
+
+//  一元三次方程求解
+
+#include <bits/stdc++.h>
+using namespace std;
+double a,b,c,d;
+int main()
+{
+    cin>>a>>b>>c>>d;
+    for(double i=-100;i<=100;i+=0.001)
+    {
+        double x=i,y=x+0.001;
+        double xx=x*x*x*a+x*x*b+x*c+d,yy=y*y*y*a+y*y*b+y*c+d;
+        if(xx<=0&&yy>=0||xx>=0&&yy<=0)
+        {
+            double ans=(x+y)/2;
+            cout<<fixed<<setprecision(2)<<ans<<" ";
+        }
+    }
+      return 0;
+}
+
+// 字符序列的子序列是指从给定字符序列中随意地（不一定连续）去掉若干个字符（可能一个也不去掉）后所形成的字符序列。令给定的字符序列 X={x  0 ​  ,x  1 ​  ,⋯,x  m−1 ​  }，
+
+// Code by KSkun, 2018/6
+#include <cstdio>
+#include <cctype>
+#include <cstring>
+
+#include <algorithm>
+
+const int MAXN = 5005, MO = 1e8;
+
+int n, m, dp[2][MAXN], dp2[2][MAXN];
+char s1[MAXN], s2[MAXN];
+
+int main() {
+    scanf("%s%s", s1 + 1, s2 + 1);
+    n = strlen(s1 + 1) - 1; m = strlen(s2 + 1) - 1;
+    for(int i = 0; i <= m; i++) dp2[0][i] = 1;
+    dp2[1][0] = 1;
+    int p = 1;
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= m; j++) {
+            dp[p][j] = std::max(dp[p ^ 1][j], dp[p][j - 1]);
+            dp2[p][j] = 0;
+            if(s1[i] == s2[j]) {
+                dp[p][j] = std::max(dp[p][j], dp[p ^ 1][j - 1] + 1);
+            }
+            if(s1[i] == s2[j] && dp[p][j] == dp[p ^ 1][j - 1] + 1) {
+                dp2[p][j] = (dp2[p][j] + dp2[p ^ 1][j - 1]) % MO;
+            }
+            if(dp[p][j] == dp[p ^ 1][j]) {
+                dp2[p][j] = (dp2[p][j] + dp2[p ^ 1][j]) % MO;
+            }
+            if(dp[p][j] == dp[p][j - 1]) {
+                dp2[p][j] = (dp2[p][j] + dp2[p][j - 1]) % MO;
+            }
+            if(dp[p][j] == dp[p ^ 1][j - 1]) {
+                dp2[p][j] = ((dp2[p][j] - dp2[p ^ 1][j - 1]) % MO + MO) % MO;
+            }
+        }
+        p ^= 1;
+    }
+    printf("%d\n%d", dp[p ^ 1][m], dp2[p ^ 1][m]);
+    return 0;
+}
+
+// 在一个圆形操场的四周摆放 N 堆石子，现要将石子有次序地合并成一堆，规定每次只能选相邻的 2 堆合并成新的一堆，并将新的一堆的石子数，记为该次合并的得分。
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+const int N=500+5;
+int s[N];
+int Max[N][N];
+int Min[N][N];
+int MAX=-1;
+int MIN=1e9;
+int main(){
+    int n;
+    cin>>n;
+    memset(Max,-0x3f,sizeof(Max));
+    memset(Min,0x3f,sizeof(Min));
+    for(int i=1;i<=n;i++){
+        cin>>s[i];
+        s[i+n]=s[i];
+        Max[i][i]=0;
+        Max[i+n][i+n]=0;
+        Min[i][i]=0;
+        Min[i+n][i+n]=0;
+    }
+    for(int i=1;i<=2*n;i++)s[i]+=s[i-1];
+    for(int i=1;i<=n;i++){
+        for(int len=2;len<=n;len++){
+            for(int l=i;l+len-1<=n+i-1;l++){
+                int r=l+len-1;
+                for(int k=l;k<r;k++){
+                    Max[l][r]=max(Max[l][r],Max[l][k]+Max[k+1][r]+s[r]-s[l-1]);
+                    Min[l][r]=min(Min[l][r],Min[l][k]+Min[k+1][r]+s[r]-s[l-1]);
+                }
+               
+            }
+        }
+        MAX=max(MAX,Max[i][n+i-1]);
+        MIN=min(MIN,Min[i][n+i-1]);
+    }
+    cout<<MIN<<endl<<MAX;
+    return 0;
+}
+
+
+// 给定非负整数 n，求 2  n   的值。
+
+
+#include <bits/stdc++.h>
+using namespace std;
+int main() {
+	long long n;
+	cin>>n;
+	int t=1;
+	for(int i=1;i<=n;i++){
+		t*=2;
+	}
+	cout<<t; 
+	return 0;
+}
 ```
